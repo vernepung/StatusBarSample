@@ -1,9 +1,9 @@
 # Windows image file caches
 Thumbs.db
 ehthumbs.db
-*/Debug/*
-*/bin/*
-*/obj/*
+Debug/*
+bin/*
+obj/*
 *.user
 *.suo
 *.temp
