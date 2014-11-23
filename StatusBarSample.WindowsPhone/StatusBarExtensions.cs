@@ -26,8 +26,8 @@ namespace StatusBarSample
 {
     public static class StatusBarExtensions
     {
-        private static bool IsLoading = false;
-        private static StatusBar statusBar
+        private static bool _isLoading = false;
+        public static StatusBar StatusBar
         {
             get
             {
@@ -46,22 +46,22 @@ namespace StatusBarSample
             coreApplication.Dispatcher.RunAsync(Windows.UI.Core.CoreDispatcherPriority.Normal, async delegate
             {
                 Random random = new Random();
-                IsLoading = true;
-                statusBar.ProgressIndicator.ProgressValue = 0;
+                _isLoading = true;
+                StatusBar.ProgressIndicator.ProgressValue = 0;
 
-                statusBar.ProgressIndicator.Text = text;
-                await statusBar.ProgressIndicator.ShowAsync();
-                while (IsLoading)
+                StatusBar.ProgressIndicator.Text = text;
+                await StatusBar.ProgressIndicator.ShowAsync();
+                while (_isLoading)
                 {
                     await Task.Delay(random.Next(200, 500));
-                    if (IsLoading)
+                    if (_isLoading)
                     {
-                        if (statusBar.ProgressIndicator.ProgressValue >= 1)
+                        if (StatusBar.ProgressIndicator.ProgressValue >= 1)
                         {
-                            IsLoading = false;
+                            _isLoading = false;
                             break;
                         }
-                        statusBar.ProgressIndicator.ProgressValue += random.NextDouble() / 10.0;
+                        StatusBar.ProgressIndicator.ProgressValue += random.NextDouble() / 10.0;
                     }
                     else
                         break;
@@ -76,10 +76,10 @@ namespace StatusBarSample
                  Windows.UI.Core.CoreDispatcherPriority.Normal,
                  async delegate
                  {
-                     IsLoading = true;
-                     statusBar.ProgressIndicator.ProgressValue = null;
-                     statusBar.ProgressIndicator.Text = text;
-                     await statusBar.ProgressIndicator.ShowAsync();
+                     _isLoading = true;
+                     StatusBar.ProgressIndicator.ProgressValue = null;
+                     StatusBar.ProgressIndicator.Text = text;
+                     await StatusBar.ProgressIndicator.ShowAsync();
                  });
         }
         public static void StopLoading()
@@ -88,11 +88,11 @@ namespace StatusBarSample
                 Windows.UI.Core.CoreDispatcherPriority.Normal,
                 async delegate
                 {
-                    if (IsLoading)
+                    if (_isLoading)
                     {
-                        await statusBar.ProgressIndicator.HideAsync();
-                        IsLoading = false;
-                        statusBar.ProgressIndicator.ProgressValue = 0;
+                        await StatusBar.ProgressIndicator.HideAsync();
+                        _isLoading = false;
+                        StatusBar.ProgressIndicator.ProgressValue = 0;
                     }
                 });
         }
@@ -103,16 +103,16 @@ namespace StatusBarSample
             {
                 StopLoading();
 
-                statusBar.ProgressIndicator.Text = text;
-                statusBar.ProgressIndicator.ProgressValue = 0;
-                await statusBar.ProgressIndicator.ShowAsync();
+                StatusBar.ProgressIndicator.Text = text;
+                StatusBar.ProgressIndicator.ProgressValue = 0;
+                await StatusBar.ProgressIndicator.ShowAsync();
                 if (!allowHide) return;
                 if (timeSpan == null)
                     timeSpan = TimeSpan.FromSeconds(3);
                 await Task.Delay((TimeSpan)timeSpan);
                 await CoreApplication.GetCurrentView().Dispatcher.RunAsync(Windows.UI.Core.CoreDispatcherPriority.Normal, async delegate
                 {
-                    await statusBar.ProgressIndicator.HideAsync();
+                    await StatusBar.ProgressIndicator.HideAsync();
                 });
             });
         }
